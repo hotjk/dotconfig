@@ -1,0 +1,93 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="12.0" DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <Import Project="$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props" Condition="Exists('$(MSBuildExtensionsPath)\$(MSBuildToolsVersion)\Microsoft.Common.props')" />
+  <PropertyGroup>
+    <Configuration Condition=" '$(Configuration)' == '' ">Debug</Configuration>
+    <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
+    <ProjectGuid>{D7865771-4584-4C5C-B8B6-C52D35727274}</ProjectGuid>
+    <OutputType>Library</OutputType>
+    <AppDesignerFolder>Properties</AppDesignerFolder>
+    <RootNamespace>Settings.Model</RootNamespace>
+    <AssemblyName>Settings.Model</AssemblyName>
+    <TargetFrameworkVersion>v4.5</TargetFrameworkVersion>
+    <FileAlignment>512</FileAlignment>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
+    <DebugSymbols>true</DebugSymbols>
+    <DebugType>full</DebugType>
+    <Optimize>false</Optimize>
+    <OutputPath>bin\Debug\</OutputPath>
+    <DefineConstants>DEBUG;TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Release|AnyCPU' ">
+    <DebugType>pdbonly</DebugType>
+    <Optimize>true</Optimize>
+    <OutputPath>bin\Release\</OutputPath>
+    <DefineConstants>TRACE</DefineConstants>
+    <ErrorReport>prompt</ErrorReport>
+    <WarningLevel>4</WarningLevel>
+  </PropertyGroup>
+  <ItemGroup>
+    <Reference Include="System" />
+    <Reference Include="System.Configuration" />
+    <Reference Include="System.Core" />
+    <Reference Include="System.Xml.Linq" />
+    <Reference Include="System.Data.DataSetExtensions" />
+    <Reference Include="Microsoft.CSharp" />
+    <Reference Include="System.Data" />
+    <Reference Include="System.Xml" />
+  </ItemGroup>
+  <ItemGroup>
+    <Compile Include="Clients\Client.cs" />
+    <Compile Include="Clients\ClientService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="ISqlRepository.cs" />
+    <Compile Include="ISqlService.cs" />
+    <Compile Include="Nodes\Entry.cs" />
+    <Compile Include="Clients\IClientRepository.cs" />
+    <Compile Include="Nodes\INodeRepository.cs" />
+    <Compile Include="Clients\IClientService.cs" />
+    <Compile Include="Nodes\INodeService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="SqlService.cs" />
+    <Compile Include="Users\IUserRepository.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Users\IUserService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+    <Compile Include="Nodes\Node.cs" />
+    <Compile Include="Properties\AssemblyInfo.cs" />
+    <Compile Include="Nodes\NodeService.cs" />
+    <Compile Include="Users\User.cs" />
+    <Compile Include="Users\UserService.cs">
+      <SubType>Code</SubType>
+    </Compile>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Grit.Tree\Grit.Tree.csproj">
+      <Project>{8c530c2d-566f-4d0c-8368-4e5fc68187b3}</Project>
+      <Name>Grit.Tree</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Grit.Utility\Grit.Utility.csproj">
+      <Project>{bd3ad860-d5a7-4fbd-91a0-bdf20236e5a8}</Project>
+      <Name>Grit.Utility</Name>
+    </ProjectReference>
+    <ProjectReference Include="..\Settings.Client\Settings.Client.csproj">
+      <Project>{977a672d-4530-480e-9ce4-a9b6f874c32f}</Project>
+      <Name>Settings.Client</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
+  <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
+       Other similar extension points exist, see Microsoft.Common.targets.
+  <Target Name="BeforeBuild">
+  </Target>
+  <Target Name="AfterBuild">
+  </Target>
+  -->
+</Project>

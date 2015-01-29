@@ -1,0 +1,94 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/bootstrap")
+    @Styles.Render("~/Content/toastr")
+    @Styles.Render("~/Content/site")
+    @Scripts.Render("~/bundles/modernizr")
+    @RenderSection("styles", required: false)
+    @Scripts.Render("~/bundles/requirejs")
+    <script>
+        require.config({
+            paths: {
+                'jquery': '@Scripts.Url("~/bundles/jquery")',
+                'jqueryval': '@Scripts.Url("~/bundles/jqueryval")',
+                'bootstrap': '@Scripts.Url("~/bundles/bootstrap")',
+                'jstree': '@Scripts.Url("~/bundles/jstree")',
+                'toastr': '@Scripts.Url("~/bundles/toastr")',
+                'utility-js': '@Scripts.Url("~/bundles/utility-js")'
+                @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsPathScripts(ViewBag.RequireJsBundles)
+            },
+            shim: {
+                'bootstrap': {
+                    deps: ['jquery']
+                },
+                'jqueryval': {
+                    deps: ['jquery']
+                }
+            },
+            waitSeconds: 60
+            @Grit.Utility.Web.JS.AppScriptsBandles.GetRequireJsDeps(ViewBag.RequireJsMain)
+        });
+        require(['utility-js'],
+            function (u) {
+                $(document).ready(function () {
+                    @if (TempData["Info"] != null)
+                    {
+                        @:u.showToast('info', '@TempData["Info"]'); 
+                    }
+                    @if (ViewData.ModelState[string.Empty] != null)
+                    {
+                        foreach (var error in ViewData.ModelState[string.Empty].Errors)
+                        {
+                            @:u.showToast('error', '@error.ErrorMessage');
+                        }
+                    }
+                });
+            });
+    </script>
+    @RenderSection("scripts", required: false)
+</head>
+<body>
+    <nav class="navbar navbar-default navbar-fixed-top">
+        <div class="container">
+            <div class="navbar-header">
+                <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                    <span class="sr-only">Toggle navigation</span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                    <span class="icon-bar"></span>
+                </button>
+                <a href='@Url.Action("Index", "Home", new { area = "" })' style="height:50px; overflow:hidden;" >
+                    <img src="~/Images/settings.png" class="logo" />
+                    <div class="navbar-brand">DotConfig</div>
+                </a>
+                @*@Html.ActionLink("Settings Server", "Index", "Home", new { area = "" }, new { @class = "navbar-brand" })*@
+            </div>
+            <div id="navbar" class="navbar-collapse collapse">
+                <ul class="nav navbar-nav">
+                    <li>@Html.ActionLink("Node", "Group", "Node")</li>
+                    <li>@Html.ActionLink("Client", "Map", "Client")</li>
+                    <li>@Html.ActionLink("Security Key Generator", "", "SecurityKey")</li>
+                </ul>
+                <ul class="nav navbar-nav navbar-right">
+                    @if (Request.IsAuthenticated)
+                    {
+                        <li>@Html.ActionLink(User.Identity.Name, "ChangePassword", "Home")</li>
+                    }
+                </ul>
+            </div><!--/.nav-collapse -->
+        </div>
+    </nav>
+
+    <div class="container body-content">
+        @RenderBody()
+        <hr />
+        <footer>
+            <p>&copy; @DateTime.Now.Year - DotConfig</p>
+        </footer>
+    </div>
+</body>
+</html>

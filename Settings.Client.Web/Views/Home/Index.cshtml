@@ -1,0 +1,15 @@
+﻿@model Settings.Client.SettingsResponse
+@{
+    ViewBag.Title = "Settings Client";
+}
+@if (Model != null)
+{
+    <h2>@Model.Client</h2>
+    <dl>
+        @foreach (var entry in Model.Entries)
+        {
+            <dt>@entry.Path</dt>
+            <dd>@entry.Value</dd>
+        }
+    </dl>
+}

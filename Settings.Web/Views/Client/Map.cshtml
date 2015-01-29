@@ -1,0 +1,62 @@
+﻿@using Grit.Utility.Web.Json
+@{
+    ViewBag.Title = "Client / Node Mapping";
+    ViewBag.RequireJsBundles = new string[] { "jstree-map-js" };
+}
+@section styles {
+    @Styles.Render("~/Content/jstree/themes/proton/style")
+}
+<h2>@ViewBag.Title</h2>
+@section scripts {
+    <script>
+        require(['jquery', 'bootstrap', 'jstree-map-js', 'utility-js'],
+            function ($, bootstrap, app, u) {
+                $(document).ready(function () {
+                    app.init($('#ctl_tree_left'), $('#ctl_tree_right'),
+                        @Html.Json(@ViewBag.LeftTree as object),
+                            @Html.Json(@ViewBag.RightTree as object));
+
+                    $("#btn_edit").on('click', function(){
+                        var tree = app.tree();
+                        var selected = tree.get_top_selected();
+                        if(selected.length == 0) {
+                            u.showToast('error','Please select client first');
+                            return;
+                        }
+                        var id = tree.get_node(selected).data.content;
+                        window.location.href = '@Url.Action("Edit")/' + id;
+                    });
+                    $("#btn_save").on('click', function(){
+                        $.ajax({
+                            url: "@Url.Action("Map")",
+                            type: 'POST',
+                            data: JSON.stringify(app.data()),
+                            dataType: 'json',
+                            processData: false,
+                            contentType: 'application/json; charset=utf-8'
+                        }).done(function (data) {
+                            u.showToast('success','Saved successfully');
+                        }).fail(function (data) {
+                            u.showToast('error', 'Failed to save');
+                        });
+                    });
+                });
+            });
+    </script>
+}
+
+<div class="row">
+    <p class="pull-right">Select client then select the nodes for the client</p>
+</div>
+<div class="row">
+    <div class="pull-right">
+        <button type="button" class="btn btn-default" id="btn_save">Save Mapping</button>
+        @Html.ActionLink("New Client", "Edit", null, new { @class = "btn btn-default" })
+        <button type="button" class="btn btn-default" id="btn_edit">Edit Client</button>
+    </div>
+</div>
+<div class="row">
+    <div id="ctl_tree_left" class="col-sm-6"></div>
+    <div id="ctl_tree_right" class="col-sm-6"></div>
+</div>
+

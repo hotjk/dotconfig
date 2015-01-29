@@ -1,0 +1,42 @@
+﻿@using Grit.Utility.Web.Json
+@{
+    ViewBag.Title = "DotConfig";
+    ViewBag.RequireJsBundles = new string[] { "jstree-basic-js" };
+}
+@section styles {
+    @Styles.Render("~/Content/jstree/themes/proton/style")
+}
+<h2>@ViewBag.Title</h2>
+@section scripts {
+    <script>
+        require(['jquery', 'bootstrap', 'jstree-basic-js'],
+            function ($, bootstrap, app) {
+                $(document).ready(function () {
+                    app.init($('#ctl_tree'), @Html.Json(@ViewBag.Tree as object));
+                        
+                    app.bind(
+                        function(i){
+                            $.getJSON('@Url.Action("Basic","Node")/' + i)
+                            .done(function(data) {
+                                console.log(data);
+                                var entities = '';
+                                $.each(data.Entries, function(i,v) {
+                                    entities += '<dt>' + v.Key + '</dt><dd>' + v.Value + '</dd>';
+                                });
+                                $('#panel_node').html(entities).show();
+                            })
+                        },
+                        function(i){
+                            $('#panel_node').empty().hide();
+                        }
+                    );
+                });
+            });
+    </script>
+}
+
+<div class="row">
+    <div id="ctl_tree" class="col-sm-6"></div>
+    <dl id="panel_node" class="dl-horizontal col-sm-6"></dl>
+</div>
+

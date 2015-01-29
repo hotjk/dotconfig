@@ -1,0 +1,41 @@
+﻿@model Settings.Web.Models.SignupVM
+@{
+    ViewBag.Title = "Sign up";
+    ViewBag.RequireJsMain = new string[] { "jquery", "jqueryval" };
+}
+
+<h2>@ViewBag.Title</h2>
+@using (Html.BeginForm("Signup", "Home", FormMethod.Post, new { role = "form", @class = "form-horizontal" }))
+{
+    
+    <div class="row">
+        <div class="form-group">
+            @Html.LabelFor(x => x.Username, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                <p class="form-control-static">
+                    @Html.TextBoxFor(x => x.Username, new { @class = "form-control", rows = 5 })
+                    <span class="help-block">@Html.ValidationMessageFor(x => x.Username)</span>
+                </p>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.Password, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.PasswordFor(x => x.Password, new { @class = "form-control", rows = 5 })
+                <span class="help-block">@Html.ValidationMessageFor(x => x.Password)</span>
+            </div>
+        </div>
+        <div class="form-group">
+            @Html.LabelFor(x => x.PasswordRe, new { @class = "col-sm-2 control-label" })
+            <div class="col-sm-4">
+                @Html.PasswordFor(x => x.PasswordRe, new { @class = "form-control", rows = 5 })
+                <span class="help-block">@Html.ValidationMessageFor(x => x.PasswordRe)</span>
+            </div>
+        </div>
+        <div class="form-group">
+            <div class="col-sm-offset-2 col-sm-10">
+                <button type="submit" class="btn btn-default">Save</button>
+            </div>
+        </div>
+    </div>
+}
