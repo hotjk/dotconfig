@@ -39,6 +39,7 @@ CREATE TABLE `settings_tree` (
 CREATE TABLE `settings_client` (
   `ClientId` int(11) NOT NULL,
   `Name` varchar(100) NOT NULL,
+  `Callback` varchar(1000) DEFAULT NULL,
   `PublicKey` varchar(2000) NOT NULL,
   `Version` int(11) NOT NULL,
   `Deleted` int(11) NOT NULL DEFAULT '0',
