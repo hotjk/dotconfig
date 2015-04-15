@@ -6,6 +6,8 @@ using Settings.Web.Models;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Net.Http;
+using System.Threading.Tasks;
 using System.Web;
 using System.Web.Mvc;
 
@@ -126,6 +128,19 @@ namespace Settings.Web.Controllers
                 }
             });
             ClientService.SaveClientNodes(clients);
+
+            foreach (var client in clients)
+            {
+                if(string.IsNullOrEmpty(client.Callback)){
+                    continue;
+                }
+                
+                Task.Factory.StartNew(() =>
+                {
+                    HttpClient httpClient = new HttpClient();
+                    httpClient.GetAsync(client.Callback);
+                });
+            }
             return new JsonNetResult(clients);
         }
     }

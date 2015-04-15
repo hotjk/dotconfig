@@ -18,7 +18,7 @@ namespace Settings.Repository.MySql
             using (IDbConnection connection = OpenConnection())
             {
                 using (var multi = connection.QueryMultiple(
-@"SELECT `ClientId`, `Name`, `PublicKey`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client` WHERE `ClientId` = @ClientId AND `Deleted` = 0;
+@"SELECT `ClientId`, `Name`, `Callback`, `PublicKey`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client` WHERE `ClientId` = @ClientId AND `Deleted` = 0;
 SELECT `NodeId` FROM `settings_client_node` WHERE `ClientId` = @ClientId;", 
                     new {  ClientId = clientId }))
                 {
@@ -37,7 +37,7 @@ SELECT `NodeId` FROM `settings_client_node` WHERE `ClientId` = @ClientId;",
             using (IDbConnection connection = OpenConnection())
             {
                 var client = connection.Query<Client>(
-@"SELECT `ClientId`, `Name`, `PublicKey`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client` WHERE `Name` = @Name AND `Deleted` = 0;", 
+@"SELECT `ClientId`, `Name`, `Callback`, `PublicKey`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client` WHERE `Name` = @Name AND `Deleted` = 0;", 
                     new { Name = name }).SingleOrDefault();
                 if(client == null)
                 {
@@ -60,7 +60,7 @@ SELECT `NodeId` FROM `settings_client_node` WHERE `ClientId` = @ClientId;",
             using (IDbConnection connection = OpenConnection())
             {
                 using (var multi = connection.QueryMultiple(
-@"SELECT `ClientId`, `Name`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client` WHERE `Deleted` = 0;
+@"SELECT `ClientId`, `Name`, `Callback`, `Version`, `CreateAt`, `UpdateAt` FROM `settings_client` WHERE `Deleted` = 0;
 SELECT `ClientId`, `NodeId` FROM `settings_client_node`;"))
                 {
                     var clients = multi.Read<Client>();
@@ -87,8 +87,8 @@ SELECT `ClientId`, `NodeId` FROM `settings_client_node`;"))
                     {
                         if (1 != connection.Execute(
 @"INSERT INTO `settings_client` 
-(`ClientId`, `Name`, `PublicKey`, `Version`, `CreateAt`, `UpdateAt`)
-VALUES (@ClientId, @Name, @PublicKey, @Version, @CreateAt, @UpdateAt);", client))
+(`ClientId`, `Name`, `Callback`, `PublicKey`, `Version`, `CreateAt`, `UpdateAt`)
+VALUES (@ClientId, @Name, @Callback, @PublicKey, @Version, @CreateAt, @UpdateAt);", client))
                         {
                             return false;
                         }
@@ -102,7 +102,7 @@ VALUES (@ClientId, @Name, @PublicKey, @Version, @CreateAt, @UpdateAt);", client)
                         client.Version++;
                         int n = connection.Execute(
 @"UPDATE `settings_client` 
-SET `Name` = @Name, `PublicKey` = @PublicKey, `Version` = @Version, `UpdateAt` = @UpdateAt 
+SET `Name` = @Name, `Callback` = @Callback, `PublicKey` = @PublicKey, `Version` = @Version, `UpdateAt` = @UpdateAt 
 WHERE ClientId = @ClientId;", client);
                     }
                     transaction.Commit();

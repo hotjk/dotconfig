@@ -10,6 +10,7 @@ namespace Settings.Model
     {
         public int ClientId { get; set; }
         public string Name { get; set; }
+        public string Callback { get; set; }
         public string PublicKey { get; set; }
         public string PrivateKey { get; set; }
         public int[] Nodes { get; set; }

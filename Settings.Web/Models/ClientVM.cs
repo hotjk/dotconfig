@@ -19,6 +19,10 @@ namespace Settings.Web.Models
         [RegularExpression(@"^[a-zA-Z][a-zA-Z0-9_]{0,99}$", ErrorMessage = "{0} must be less than 100 letters, numbers or underscores, and must begin with a letter")]
         public string Name { get; set; }
 
+        [Display(Name="Callback Url")]
+        [StringLength(1000, ErrorMessage = "{0} must be less than {1} characters")]
+        public string Callback { get; set; }
+
         [Display(Name = "RSA Public Key")]
         [Required(ErrorMessage = "{0} is required")]
         [StringLength(2000, ErrorMessage = "{0} must be less than {1} characters")]

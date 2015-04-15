@@ -3,6 +3,7 @@
 * DotConfig is a simple implementation of External Configuration Store pattern.
 * Node tree is a tree structure and each node contains some configuration items.
 * Map the nodes to client, will give client the rights to access the configuration items in nodes.
+* When client/node mapping changed, server will request client callback url, so client can recall server to refresh configuration items.
 * Client request configuration items with simple pattern.
 * All transmission between client and server is encrypt with RSA.
 * Settings.Web is the configuration server site.
