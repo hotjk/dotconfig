@@ -62,6 +62,8 @@ namespace Settings.Model
 
             SettingsResponse resp = new SettingsResponse(client.Name);
             var path = new List<Grit.Tree.Node>(5);
+
+            RijndaelManager rsa = new RijndaelManager(KEY, IV);
             foreach (var node in clientNodes)
             {
                 if (node.Entries == null || !node.Entries.Any()) continue;
@@ -72,7 +74,7 @@ namespace Settings.Model
                     path.Select(n => allNodes.FirstOrDefault(x => x.NodeId == n.Data)).Select(n => n.Name).Reverse())
                     + "/";
 
-                resp.Entries.AddRange(node.Entries.Select(n => new SettingsResponse.Entry { Path = strPath + n.Key, Value = n.Value }));
+                resp.Entries.AddRange(node.Entries.Select(n => new SettingsResponse.Entry { Path = strPath + n.Key, Value = rsa.Decrypt(n.Value) }));
             }
             return resp;
         }
